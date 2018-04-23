@@ -2,7 +2,9 @@ const express = require("express");
 
 const router = express.Router();
 
-// test route - GET
+// @route   GET /api/post/test
+// @desc    test route, nothing functional
+// @access  Public
 router.get("/test", (req, res) => {
   res.json({ msg: "/api/post/test route" });
 });

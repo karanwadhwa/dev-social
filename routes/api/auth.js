@@ -6,12 +6,16 @@ const User = require("../../models/User");
 
 const router = express.Router();
 
-// test route - GET
+// @route   GET /api/auth/test
+// @desc    test route, nothing functional
+// @access  Public
 router.get("/test", (req, res) => {
   res.json({ msg: "/api/auth/test route" });
 });
 
-// registration route - POST
+// @route   POST /api/auth/test
+// @desc    user registration route
+// @access  Public
 router.post("/register", (req, res) => {
   // search if a user with entered email already exists
   User.findOne({ email: req.body.email }).then(user => {
