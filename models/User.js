@@ -17,8 +17,8 @@ const UserSchema = new Schema({
   },
   avatar: {
     type: String,
-    required: true
+    default: "https://image.flaticon.com/icons/svg/149/149071.svg"
   }
 });
 
-module.expors = User = mongoose.model("users", UserSchema);
+module.exports = User = mongoose.model("name", UserSchema, "users");
