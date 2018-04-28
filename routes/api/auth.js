@@ -1,5 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+// Import environment variables
+require("dotenv").config();
 
 // Load User Model
 const User = require("../../models/User");
@@ -57,7 +61,21 @@ router.post("/login", (req, res) => {
     // User found, validate password
     bcrypt.compare(req.body.password, user.password).then(isMatch => {
       if (isMatch) {
-        return res.status(200).json({ msg: "User Login Successful" });
+        // Generate JWT Payload
+        const payload = { id: user.id, email: user.email, avatar: user.avatar };
+
+        // Generate & Sign Token
+        jwt.sign(
+          payload,
+          process.env.jwtSecret,
+          { expiresIn: "1h" },
+          (err, token) => {
+            res.status(200).json({
+              msg: "User Login Successful",
+              token: "Bearer " + token
+            });
+          }
+        );
       } else {
         return res.status(401).json({ error: "Password Incorrect" });
       }
