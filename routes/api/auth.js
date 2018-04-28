@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 
 // Import environment variables
 require("dotenv").config();
@@ -62,7 +63,7 @@ router.post("/login", (req, res) => {
     bcrypt.compare(req.body.password, user.password).then(isMatch => {
       if (isMatch) {
         // Generate JWT Payload
-        const payload = { id: user.id, email: user.email, avatar: user.avatar };
+        const payload = { id: user.id, email: user.email };
 
         // Generate & Sign Token
         jwt.sign(
@@ -82,5 +83,16 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
+// @route   POST /api/auth/protected
+// @desc    protected route for testing, returns currently logged in user
+// @access  Protected
+router.get(
+  "/protected",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json(req.user);
+  }
+);
 
 module.exports = router;

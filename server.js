@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const passport = require("passport");
 
 //Import route files
 const auth = require("./routes/api/auth");
@@ -20,6 +21,11 @@ mongoose
   .connect(process.env.mongoURI)
   .then(() => console.log("Connected to DB"))
   .catch(err => console.log(err));
+
+// Passport Middleware
+app.use(passport.initialize());
+// Passport config
+require("./config/passport")(passport);
 
 // bodyParser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
