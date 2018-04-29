@@ -3,6 +3,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 
+// Input Validation
+const validateRegisterInput = require("../../validation/register");
+
 // Import environment variables
 require("dotenv").config();
 
@@ -22,9 +25,17 @@ router.get("/test", (req, res) => {
 // @desc    user registration route
 // @access  Public
 router.post("/register", (req, res) => {
+  // Validation Stuff
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   // search if a user with entered email already exists
   User.findOne({ email: req.body.email }).then(user => {
-    if (user) return res.status(400).json({ error: "email already exists" });
+    if (user)
+      return res.status(400).json({ err: { email: "email already exists" } });
     else {
       // generate new User object
       const newUser = new User({
