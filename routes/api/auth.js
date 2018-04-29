@@ -5,6 +5,7 @@ const passport = require("passport");
 
 // Input Validation
 const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 // Import environment variables
 require("dotenv").config();
@@ -25,7 +26,7 @@ router.get("/test", (req, res) => {
 // @desc    user registration route
 // @access  Public
 router.post("/register", (req, res) => {
-  // Validation Stuff
+  // Input Validation
   const { errors, isValid } = validateRegisterInput(req.body);
 
   if (!isValid) {
@@ -34,9 +35,10 @@ router.post("/register", (req, res) => {
 
   // search if a user with entered email already exists
   User.findOne({ email: req.body.email }).then(user => {
-    if (user)
-      return res.status(400).json({ err: { email: "email already exists" } });
-    else {
+    if (user) {
+      errors.err.email = "Email already exists";
+      return res.status(400).json(errors);
+    } else {
       // generate new User object
       const newUser = new User({
         name: req.body.name,
@@ -64,10 +66,18 @@ router.post("/register", (req, res) => {
 // @desc    user registration route
 // @access  Public
 router.post("/login", (req, res) => {
+  // Input Validation
+  const { errors, isValid } = validateLoginInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   // Find user by email
   User.findOne({ email: req.body.email }).then(user => {
     if (!user) {
-      return res.status(404).json({ error: "User Not Found" });
+      errors.err.email = "User Not Found";
+      return res.status(404).json(errors);
     }
 
     // User found, validate password
@@ -89,7 +99,8 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(401).json({ error: "Password Incorrect" });
+        errors.err.password = "Password Incorrect";
+        return res.status(401).json(errors);
       }
     });
   });
