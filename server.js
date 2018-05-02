@@ -7,6 +7,7 @@ const passport = require("passport");
 const auth = require("./routes/api/auth");
 const user = require("./routes/api/user");
 const post = require("./routes/api/post");
+const profile = require("./routes/api/profile");
 
 // Import environment variables
 require("dotenv").config();
@@ -38,6 +39,7 @@ app.get("/", (req, res) => res.send("dev-social"));
 app.use("/api/auth", auth);
 app.use("/api/user", user);
 app.use("/api/post", post);
+app.use("/api/profile", profile);
 
 // Start server
 app.listen(port, () => console.log(`Server Started on Port ${port}`));
