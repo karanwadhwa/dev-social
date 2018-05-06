@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 
 const validateProfileInput = require("../../validation/profile");
+const validateExpInput = require("../../validation/experience");
 
 // Load Models
 const User = require("../../models/User");
@@ -161,6 +162,11 @@ router.post(
   "/exp",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    //
+    const { errors, isValid } = validateExpInput(req.body);
+    // check validation
+    if (!isValid) return res.status(400).json(errors);
+
     Profile.findOne({ user: req.user.id }).then(profile => {
       const newExp = {
         title: req.body.title,
@@ -173,9 +179,9 @@ router.post(
       };
 
       // Add experience to array
-      Profile.experience.unshift(newExp);
+      profile.experience.unshift(newExp);
 
-      Profile.save().then(profile => res.status(201).json(profile));
+      profile.save().then(profile => res.status(201).json(profile));
     });
   }
 );
