@@ -4,6 +4,7 @@ const passport = require("passport");
 
 const validateProfileInput = require("../../validation/profile");
 const validateExpInput = require("../../validation/experience");
+const validateEduInput = require("../../validation/education");
 
 // Load Models
 const User = require("../../models/User");
@@ -193,6 +194,11 @@ router.post(
   "/edu",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    // Input Validation
+    const { errors, isValid } = validateEduInput(req.body);
+    // check validation
+    if (!isValid) return res.status(400).json(errors);
+
     Profile.findOne({ user: req.user.id }).then(profile => {
       const newEdu = {
         school: req.body.school,
