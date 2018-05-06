@@ -186,4 +186,30 @@ router.post(
   }
 );
 
+// @route   POST /api/profile/edu
+// @desc    Add education info to user profile
+// @access  Private
+router.post(
+  "/edu",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      const newEdu = {
+        school: req.body.school,
+        degree: req.body.degree,
+        major: req.body.major,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
+        description: req.body.description
+      };
+
+      // Add experience to array
+      profile.education.unshift(newEdu);
+
+      profile.save().then(profile => res.status(201).json(profile));
+    });
+  }
+);
+
 module.exports = router;
