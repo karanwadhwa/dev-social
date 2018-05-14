@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const passport = require("passport");
 
+const validatePostInput = require("../../validation/post");
+
 // Load Models
 const User = require("../../models/User");
 const Post = require("../../models/Post");
@@ -22,6 +24,11 @@ router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const { errors, isValid } = validatePostInput(req.body);
+
+    // check Validation
+    if (!isValid) res.status(400).json(errors);
+
     const newPost = new Post({
       user: req.user.id,
       body: req.body.body,
