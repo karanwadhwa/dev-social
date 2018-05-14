@@ -7,6 +7,7 @@ const validatePostInput = require("../../validation/post");
 // Load Models
 const User = require("../../models/User");
 const Post = require("../../models/Post");
+const Profile = require("../../models/Profile");
 
 const router = express.Router();
 
@@ -62,5 +63,29 @@ router.get("/id=:id", (req, res) => {
       res.status(404).json({ ...errors, nopost: "Invalid Post id" })
     );
 });
+
+// @route   DELETE /api/post/id=:id
+// @desc    delete post by id
+// @access  Protected
+router.delete(
+  "/id=:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findById(req.params.id)
+      .then(post => {
+        // check if post user id matches with logged in users id
+        if (post.user.toString() !== req.user.id) {
+          return res.status(401).json({
+            unauthorized: "You are not authorized to delete this post"
+          });
+        }
+        // user authenticated, delete post
+        post.remove().then(res.json({ success: true }));
+      })
+      .catch(err =>
+        res.status(404).json({ ...err, nopost: "Invalid Post id" })
+      );
+  }
+);
 
 module.exports = router;
