@@ -40,4 +40,27 @@ router.post(
   }
 );
 
+// @route   GET /api/post
+// @desc    get all posts
+// @access  Public
+router.get("/", (req, res) => {
+  Post.find()
+    .sort({ date: -1 })
+    .then(posts => res.status(200).json(posts))
+    .catch(errors =>
+      res.status(404).json({ ...errors, nopost: "No posts were found" })
+    );
+});
+
+// @route   GET /api/post/id=:id
+// @desc    find post by id
+// @access  Public
+router.get("/id=:id", (req, res) => {
+  Post.findById(req.params.id)
+    .then(post => res.status(200).json(post))
+    .catch(errors =>
+      res.status(404).json({ ...errors, nopost: "Invalid Post id" })
+    );
+});
+
 module.exports = router;
