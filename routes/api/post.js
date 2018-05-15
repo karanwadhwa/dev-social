@@ -160,4 +160,34 @@ router.delete(
   }
 );
 
+// @route   POST /api/post/comment/id=:id
+// @desc    Add comment to post
+// @access  Protected
+router.post(
+  "/comment/id=:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validatePostInput(req.body);
+
+    // check Validation
+    if (!isValid) return res.status(400).json(errors);
+
+    Post.findById(req.params.post_id)
+      .then(post => {
+        const newComment = {
+          body: req.body.body,
+          name: req.body.body,
+          avatar: req.body.avatar,
+          user: req.user.id
+        };
+
+        post.comments.unshift(newComment);
+        post.save().then(post => res.status(201).json(post));
+      })
+      .catch(errors =>
+        res.status(404).json({ ...errors, nopost: "Invalid Post id" })
+      );
+  }
+);
+
 module.exports = router;
