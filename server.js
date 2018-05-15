@@ -11,6 +11,10 @@ const profile = require("./routes/api/profile");
 
 // Import environment variables
 require("dotenv").config();
+// forces you to have the corrent .env config 
+// as provided in .env.example
+require('dotenv-safe').config();
+
 // Set Default Port
 const port = process.env.PORT || 2000;
 
