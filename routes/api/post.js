@@ -190,4 +190,41 @@ router.post(
   }
 );
 
+// @route   DELETE /api/post/comment/post_id=:post_id&comment_id=:comment_id
+// @desc    Delete comment from post
+// @access  Protected
+router.delete(
+  "/comment/post_id=:post_id&comment_id=:comment_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findById(req.params.post_id)
+      .then(post => {
+        // .filter will map through all items in like array
+        // and return [] of like objs where like.user.id === req.user.id
+        // if the user has already liked the length of this array will be 1 else 0
+        if (
+          post.comments.filter(
+            comment => comment._id.toString() === req.params.comment_id
+          ).length === 0
+        ) {
+          return res.status(404).json({ nocomment: "Comment not found" });
+        }
+
+        // comment exists, remove from array
+        // get removeIndex - index of comment in Post.comments []
+        const removeIndex = post.comments
+          .map(comment => comment._id.toString())
+          .indexOf(req.params.comment_id);
+        // map through all users in comments array and get [] of comment.id's
+        // .indexOf to this array returns the index of requested comment.id(req.params.comment_id)
+        // splice this comment out of the comments array
+        post.comments.splice(removeIndex, 1);
+
+        post.save().then(post => res.json(post));
+      })
+      .catch(errors =>
+        res.status(404).json({ ...errors, nopost: "Invalid Post id" })
+      );
+  }
+);
 module.exports = router;
