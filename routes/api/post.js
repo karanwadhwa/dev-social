@@ -88,4 +88,37 @@ router.delete(
   }
 );
 
+// @route   POST /api/post/like/id=:id
+// @desc    Like post - add user id to like array
+// @access  Protected
+router.post(
+  "/like/id=:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findById(req.params.post_id)
+      .then(post => {
+        // .filter will map through all items in like array
+        // and return [] of like objs where like.user.id === req.user.id
+        // if the user has already liked the length of this array will be 1 else 0
+        if (
+          post.likes.filter(like => like.user.toString() === req.user.id)
+            .length > 0
+        ) {
+          return res
+            .status(400)
+            .json({ nolike: "User has already liked this post" });
+        }
+
+        // if the user.id isnt present in the likes array add too it
+        post.likes.push({ user: req.user.id });
+
+        // save
+        post.save().then(post => res.status(201).json(post));
+      })
+      .catch(errors =>
+        res.status(404).json({ ...errors, nopost: "Invalid Post id" })
+      );
+  }
+);
+
 module.exports = router;
