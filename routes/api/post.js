@@ -109,11 +109,50 @@ router.post(
             .json({ nolike: "User has already liked this post" });
         }
 
-        // if the user.id isnt present in the likes array add too it
+        // if the user.id isnt present in the likes array add to it
         post.likes.push({ user: req.user.id });
 
         // save
         post.save().then(post => res.status(201).json(post));
+      })
+      .catch(errors =>
+        res.status(404).json({ ...errors, nopost: "Invalid Post id" })
+      );
+  }
+);
+
+// @route   DELETE /api/post/like/id=:id
+// @desc    Remove like from post - remove user id from like array
+// @access  Protected
+router.delete(
+  "/unlike/id=:post_id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Post.findById(req.params.post_id)
+      .then(post => {
+        // .filter will map through all items in like array
+        // and return [] of like objs where like.user.id === req.user.id
+        // if the user has already liked the length of this array will be 1 else 0
+        if (
+          post.likes.filter(like => like.user.toString() === req.user.id)
+            .length === 0
+        ) {
+          return res
+            .status(400)
+            .json({ nolike: "User hasn't liked this post" });
+        }
+
+        // remove user from likes array
+        // get remove index - index of the user in likes array
+        const removeIndex = post.likes
+          .map(user => user.id.toString())
+          .indexOf(req.user.id);
+        // map through all users in likes array and get [] of user ids
+        // .indexOf to this array returns the index of req.user.id
+        // splice this user out of the likes array
+        post.likes.splice(removeIndex, 1);
+
+        post.save().then(post => res.json(post));
       })
       .catch(errors =>
         res.status(404).json({ ...errors, nopost: "Invalid Post id" })
