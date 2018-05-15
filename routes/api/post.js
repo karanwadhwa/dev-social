@@ -28,7 +28,7 @@ router.post(
     const { errors, isValid } = validatePostInput(req.body);
 
     // check Validation
-    if (!isValid) res.status(400).json(errors);
+    if (!isValid) return res.status(400).json(errors);
 
     const newPost = new Post({
       user: req.user.id,
