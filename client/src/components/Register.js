@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class Register extends React.Component {
   render() {
     return (
       <div className="register-box">
         <div className="register-logo">
-          <a href="#">
-            <b>Admin</b>LTE
-          </a>
+          <Link to="/">
+            <b>Dev</b>Social
+          </Link>
         </div>
 
         <div className="card">
@@ -68,9 +69,9 @@ class Register extends React.Component {
             </form>
 
             <p className="mb-0">
-              <a href="login.html" className="text-center">
+              <Link to="/login" className="text-center">
                 Have an Account? Login.
-              </a>
+              </Link>
             </p>
           </div>
         </div>

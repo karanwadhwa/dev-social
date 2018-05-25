@@ -1,13 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 class Login extends React.Component {
   render() {
     return (
       <div className="login-box">
         <div className="login-logo">
-          <a href="#">
-            <b>Admin</b>LTE
-          </a>
+          <Link to="/">
+            <b>Dev</b>Social
+          </Link>
         </div>
 
         <div className="card">
@@ -47,13 +48,13 @@ class Login extends React.Component {
             </form>
 
             <p className="mb-1">
-              <a href="#">Forgot Password</a>
+              <Link to="/login">Forgot Password</Link>
             </p>
 
             <p className="mb-0">
-              <a href="register.html" className="text-center">
+              <Link to="/register" className="text-center">
                 Register Account
-              </a>
+              </Link>
             </p>
           </div>
         </div>
