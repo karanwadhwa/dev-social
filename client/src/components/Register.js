@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 class Register extends React.Component {
   constructor() {
@@ -14,10 +15,27 @@ class Register extends React.Component {
     };
 
     this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   onInputChange(e) {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onFormSubmit(e) {
+    e.preventDefault();
+
+    const newUser = {
+      name: this.state.name,
+      email: this.state.email,
+      password: this.state.password,
+      password2: this.state.password2
+    };
+
+    axios
+      .post("/api/auth/register", newUser)
+      .then(res => console.log(res.data))
+      .catch(error => console.log(error.response.data));
   }
 
   render() {
@@ -33,7 +51,7 @@ class Register extends React.Component {
           <div className="card-body register-card-body">
             <p className="register-box-msg">Create Account</p>
 
-            <form action="#" method="post">
+            <form onSubmit={this.onFormSubmit}>
               <div className="form-group has-feedback">
                 <input
                   className="form-control"
