@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import classnames from "classnames";
 
 class Login extends React.Component {
   constructor() {
@@ -19,6 +20,8 @@ class Login extends React.Component {
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div className="login-box">
         <div className="login-logo">
@@ -31,27 +34,37 @@ class Login extends React.Component {
           <div className="card-body login-card-body">
             <p className="login-box-msg">Log in to your Account</p>
 
-            <form action="#" method="post">
+            <form noValidate>
               <div className="form-group has-feedback">
                 <input
                   type="email"
-                  className="form-control"
+                  className={classnames("form-control", {
+                    "is-invalid": errors.email
+                  })}
                   placeholder="Email"
                   name="email"
                   value={this.state.email}
                   onChange={this.onInputChange}
                 />
+                {errors.email && (
+                  <div className="invalid-feedback">{errors.email}</div>
+                )}
               </div>
 
               <div className="form-group has-feedback">
                 <input
                   type="password"
-                  className="form-control"
+                  className={classnames("form-control", {
+                    "is-invalid": errors.password
+                  })}
                   placeholder="Password"
                   name="password"
                   value={this.state.password}
                   onChange={this.onInputChange}
                 />
+                {errors.password && (
+                  <div className="invalid-feedback">{errors.password}</div>
+                )}
               </div>
 
               <div className="row">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import classnames from "classnames";
 import axios from "axios";
 
 class Register extends React.Component {
@@ -35,10 +36,12 @@ class Register extends React.Component {
     axios
       .post("/api/auth/register", newUser)
       .then(res => console.log(res.data))
-      .catch(error => console.log(error.response.data));
+      .catch(error => this.setState({ errors: error.response.data.err }));
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div className="register-box">
         <div className="register-logo">
@@ -51,48 +54,68 @@ class Register extends React.Component {
           <div className="card-body register-card-body">
             <p className="register-box-msg">Create Account</p>
 
-            <form onSubmit={this.onFormSubmit}>
+            <form noValidate onSubmit={this.onFormSubmit}>
               <div className="form-group has-feedback">
                 <input
-                  className="form-control"
+                  className={classnames("form-control", {
+                    "is-invalid": errors.name
+                  })}
                   placeholder="Name"
                   name="name"
                   value={this.state.name}
                   onChange={this.onInputChange}
                 />
+                {errors.name && (
+                  <div className="invalid-feedback">{errors.name}</div>
+                )}
               </div>
 
               <div className="form-group has-feedback">
                 <input
                   type="email"
-                  className="form-control"
+                  className={classnames("form-control", {
+                    "is-invalid": errors.email
+                  })}
                   placeholder="Email"
                   name="email"
                   value={this.state.email}
                   onChange={this.onInputChange}
                 />
+                {errors.email && (
+                  <div className="invalid-feedback">{errors.email}</div>
+                )}
               </div>
 
               <div className="form-group has-feedback">
                 <input
                   type="password"
-                  className="form-control"
+                  className={classnames("form-control", {
+                    "is-invalid": errors.password
+                  })}
                   placeholder="Password"
                   name="password"
                   value={this.state.password}
                   onChange={this.onInputChange}
                 />
+                {errors.password && (
+                  <div className="invalid-feedback">{errors.password}</div>
+                )}
               </div>
 
               <div className="form-group has-feedback">
                 <input
                   type="password"
-                  className="form-control"
+                  className={classnames("form-control", {
+                    "is-invalid": errors.password2
+                  })}
                   placeholder="Confirm Password"
                   name="password2"
                   value={this.state.password2}
                   onChange={this.onInputChange}
                 />
+                {errors.password2 && (
+                  <div className="invalid-feedback">{errors.password2}</div>
+                )}
               </div>
 
               <div className="row">
