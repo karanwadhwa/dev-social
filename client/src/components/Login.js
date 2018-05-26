@@ -2,6 +2,22 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 class Login extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      email: "",
+      password: "",
+      errors: {}
+    };
+
+    this.onInputChange = this.onInputChange.bind(this);
+  }
+
+  onInputChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
   render() {
     return (
       <div className="login-box">
@@ -21,8 +37,10 @@ class Login extends React.Component {
                   type="email"
                   className="form-control"
                   placeholder="Email"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.onInputChange}
                 />
-                <span className="fa fa-envelope form-control-feedback" />
               </div>
 
               <div className="form-group has-feedback">
@@ -30,8 +48,10 @@ class Login extends React.Component {
                   type="password"
                   className="form-control"
                   placeholder="Password"
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.onInputChange}
                 />
-                <span className="fa fa-lock form-control-feedback" />
               </div>
 
               <div className="row">

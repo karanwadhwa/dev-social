@@ -2,6 +2,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 class Register extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      password2: "",
+      errors: {}
+    };
+
+    this.onInputChange = this.onInputChange.bind(this);
+  }
+
+  onInputChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
   render() {
     return (
       <div className="register-box">
@@ -21,8 +39,9 @@ class Register extends React.Component {
                   className="form-control"
                   placeholder="Name"
                   name="name"
+                  value={this.state.name}
+                  onChange={this.onInputChange}
                 />
-                <span className="fa fa-envelope form-control-feedback" />
               </div>
 
               <div className="form-group has-feedback">
@@ -31,8 +50,9 @@ class Register extends React.Component {
                   className="form-control"
                   placeholder="Email"
                   name="email"
+                  value={this.state.email}
+                  onChange={this.onInputChange}
                 />
-                <span className="fa fa-envelope form-control-feedback" />
               </div>
 
               <div className="form-group has-feedback">
@@ -41,8 +61,9 @@ class Register extends React.Component {
                   className="form-control"
                   placeholder="Password"
                   name="password"
+                  value={this.state.password}
+                  onChange={this.onInputChange}
                 />
-                <span className="fa fa-lock form-control-feedback" />
               </div>
 
               <div className="form-group has-feedback">
@@ -50,9 +71,10 @@ class Register extends React.Component {
                   type="password"
                   className="form-control"
                   placeholder="Confirm Password"
-                  name="password"
+                  name="password2"
+                  value={this.state.password2}
+                  onChange={this.onInputChange}
                 />
-                <span className="fa fa-lock form-control-feedback" />
               </div>
 
               <div className="row">
