@@ -41,7 +41,9 @@ export const loginUser = userData => dispatch => {
     );
 };
 
-const setCurrentUser = decodedToken => {
+// set decoded token data and isAuthenticated flag
+// in redux store
+export const setCurrentUser = decodedToken => {
   return {
     type: SET_CURRENT_USER,
     payload: decodedToken
