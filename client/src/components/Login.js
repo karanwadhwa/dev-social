@@ -1,6 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classnames from "classnames";
+import { connect } from "react-redux";
+import { PropTypes } from "prop-types";
+
+import { loginUser } from "../actions/authActions";
 
 class Login extends React.Component {
   constructor() {
@@ -13,14 +17,26 @@ class Login extends React.Component {
     };
 
     this.onInputChange = this.onInputChange.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   onInputChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
+  onFormSubmit(e) {
+    e.preventDefault();
+
+    const user = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    this.props.loginUser(user);
+  }
+
   render() {
-    const { errors } = this.state;
+    const { errors } = this.props;
 
     return (
       <div className="login-box">
@@ -34,7 +50,7 @@ class Login extends React.Component {
           <div className="card-body login-card-body">
             <p className="login-box-msg">Log in to your Account</p>
 
-            <form noValidate>
+            <form noValidate onSubmit={this.onFormSubmit}>
               <div className="form-group has-feedback">
                 <input
                   type="email"
@@ -96,4 +112,15 @@ class Login extends React.Component {
   }
 }
 
-export default Login;
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors
+});
+
+export default connect(mapStateToProps, { loginUser })(Login);
