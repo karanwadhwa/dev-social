@@ -20,6 +20,11 @@ class Login extends React.Component {
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
+  componentDidUpdate() {
+    const { isAuthenticated } = this.props.auth;
+    if (isAuthenticated) this.props.history.push("/dashboard");
+  }
+
   onInputChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
