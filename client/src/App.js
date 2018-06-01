@@ -6,6 +6,7 @@ import store from "./store";
 
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Layout from "./components/layout/Layout";
 
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser } from "./actions/authActions";
@@ -49,6 +50,7 @@ class App extends Component {
           <div className="App">
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
+            <Route exact path="/" component={Layout} />
           </div>
         </BrowserRouter>
       </Provider>
