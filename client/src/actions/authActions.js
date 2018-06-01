@@ -49,3 +49,13 @@ export const setCurrentUser = decodedToken => {
     payload: decodedToken
   };
 };
+
+// logout user
+export const logoutUser = () => dispatch => {
+  // delete jwtToken from localStorage
+  localStorage.removeItem("jwtToken");
+  // remove Authorization header
+  setAuthToken(false);
+  // update redux store, remove currently set user and isAuthenticated
+  dispatch(setCurrentUser({}));
+};
