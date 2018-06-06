@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import classnames from "classnames";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 
 import { loginUser } from "../../actions/authActions";
+
+import FormInput from "../common/FormInput";
 
 class Login extends React.Component {
   constructor() {
@@ -56,37 +57,23 @@ class Login extends React.Component {
             <p className="login-box-msg">Log in to your Account</p>
 
             <form noValidate onSubmit={this.onFormSubmit}>
-              <div className="form-group has-feedback">
-                <input
-                  type="email"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.email
-                  })}
-                  placeholder="Email"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.onInputChange}
-                />
-                {errors.email && (
-                  <div className="invalid-feedback">{errors.email}</div>
-                )}
-              </div>
+              <FormInput
+                type="email"
+                placeholder="Email"
+                name="email"
+                value={this.state.email}
+                onChange={this.onInputChange}
+                error={errors.email}
+              />
 
-              <div className="form-group has-feedback">
-                <input
-                  type="password"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.password
-                  })}
-                  placeholder="Password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.onInputChange}
-                />
-                {errors.password && (
-                  <div className="invalid-feedback">{errors.password}</div>
-                )}
-              </div>
+              <FormInput
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={this.state.password}
+                onChange={this.onInputChange}
+                error={errors.password}
+              />
 
               <div className="row">
                 <div className="col-8" />
@@ -128,4 +115,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(
+  mapStateToProps,
+  { loginUser }
+)(Login);
