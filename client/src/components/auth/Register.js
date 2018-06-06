@@ -1,10 +1,11 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import classnames from "classnames";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 
 import { registerUser } from "../../actions/authActions";
+
+import FormInput from "../common/FormInput";
 
 class Register extends React.Component {
   constructor() {
@@ -62,68 +63,40 @@ class Register extends React.Component {
             <p className="register-box-msg">Create Account</p>
 
             <form noValidate onSubmit={this.onFormSubmit}>
-              <div className="form-group has-feedback">
-                <input
-                  className={classnames("form-control", {
-                    "is-invalid": errors.name
-                  })}
-                  placeholder="Name"
-                  name="name"
-                  value={this.state.name}
-                  onChange={this.onInputChange}
-                />
-                {errors.name && (
-                  <div className="invalid-feedback">{errors.name}</div>
-                )}
-              </div>
+              <FormInput
+                placeholder="Full Name"
+                name="name"
+                value={this.state.name}
+                onChange={this.onInputChange}
+                error={errors.name}
+              />
 
-              <div className="form-group has-feedback">
-                <input
-                  type="email"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.email
-                  })}
-                  placeholder="Email"
-                  name="email"
-                  value={this.state.email}
-                  onChange={this.onInputChange}
-                />
-                {errors.email && (
-                  <div className="invalid-feedback">{errors.email}</div>
-                )}
-              </div>
+              <FormInput
+                type="email"
+                placeholder="Email"
+                name="email"
+                value={this.state.email}
+                onChange={this.onInputChange}
+                error={errors.email}
+              />
 
-              <div className="form-group has-feedback">
-                <input
-                  type="password"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.password
-                  })}
-                  placeholder="Password"
-                  name="password"
-                  value={this.state.password}
-                  onChange={this.onInputChange}
-                />
-                {errors.password && (
-                  <div className="invalid-feedback">{errors.password}</div>
-                )}
-              </div>
+              <FormInput
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={this.state.password}
+                onChange={this.onInputChange}
+                error={errors.password}
+              />
 
-              <div className="form-group has-feedback">
-                <input
-                  type="password"
-                  className={classnames("form-control", {
-                    "is-invalid": errors.password2
-                  })}
-                  placeholder="Confirm Password"
-                  name="password2"
-                  value={this.state.password2}
-                  onChange={this.onInputChange}
-                />
-                {errors.password2 && (
-                  <div className="invalid-feedback">{errors.password2}</div>
-                )}
-              </div>
+              <FormInput
+                type="password"
+                placeholder="Confirm Password"
+                name="password2"
+                value={this.state.password2}
+                onChange={this.onInputChange}
+                error={errors.password2}
+              />
 
               <div className="row">
                 <div className="col-8" />
@@ -161,4 +134,7 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(withRouter(Register));
