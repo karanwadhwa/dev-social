@@ -4,8 +4,8 @@ import { Provider } from "react-redux";
 import jwt_decode from "jwt-decode";
 import store from "./store";
 
-import Login from "./components/Login";
-import Register from "./components/Register";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 import Layout from "./components/layout/Layout";
 
 import setAuthToken from "./utils/setAuthToken";
@@ -13,7 +13,6 @@ import { setCurrentUser } from "./actions/authActions";
 
 import "./App.css";
 
-/* 
 // Persist user to stay logged in
 // check for token in localStorage
 if (localStorage.jwtToken) {
@@ -25,10 +24,10 @@ if (localStorage.jwtToken) {
 
   // set current user details and isAuthenticated in redux store
   store.dispatch(setCurrentUser(decodedToken));
-} */
+}
 
 class App extends Component {
-  componentDidMount() {
+  /*  componentDidMount() {
     // Persist user to stay logged in
     // check for token in localStorage
     if (localStorage.jwtToken) {
@@ -41,7 +40,7 @@ class App extends Component {
       // set current user details and isAuthenticated in redux store
       store.dispatch(setCurrentUser(decodedToken));
     }
-  }
+  } */
 
   render() {
     return (

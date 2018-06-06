@@ -4,7 +4,7 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 import { PropTypes } from "prop-types";
 
-import { registerUser } from "../actions/authActions";
+import { registerUser } from "../../actions/authActions";
 
 class Register extends React.Component {
   constructor() {
