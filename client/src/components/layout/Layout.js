@@ -12,7 +12,7 @@ export class Layout extends Component {
       <div>
         <Navbar />
         <Sidebar />
-        <Route component={Home} />
+        <Route exact path="/" component={Home} />
         <Footer />
       </div>
     );
